@@ -1,35 +1,36 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from "react";
+import "./App.css";
+
+interface User {
+  name: string,
+  age: number
+}
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [users, setUsers] = useState<Array<User>>([]);
+
+  useEffect(() => {
+    fetch("http://localhost:3000/users/getAll")
+      .then((res) => res.json())
+      .then((data) => {
+        setUsers(data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+    <h1 className="font-bold text-2xl tracking-wider mb-10">CONEXION CON EL BACK END</h1>
+    <ul className='menu bg-base-200 w-[25rem] rounded-box'>
+        <li className='menu-title text-lg'>Users</li>
+        {users.map((item: User, index: number) => (
+          <li key={index}><a className="text-gray-400">{index+1}. {item.name}</a></li>
+        ))}
+    </ul>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
