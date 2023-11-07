@@ -2,5 +2,5 @@
 
 cd .\Backend
 echo Iniciando el servidor de desarrollo...
-npm start
+npm run dev
 
